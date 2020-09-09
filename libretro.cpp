@@ -493,14 +493,19 @@ static void check_variables(void)
    var.key   = "ngp_language";
    var.value = NULL;
 
+
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
    {
-      /* user must manually restart core for change to happen */
       if (!strcmp(var.value, "japanese"))
          setting_ngp_language = 0;
       else if (!strcmp(var.value, "english"))
          setting_ngp_language = 1;
+      else
+         setting_ngp_language = 1;
    }
+   else
+      setting_ngp_language = 1;
+
 
    var.key = "ngp_sound_sample_rate";
    var.value = NULL;
