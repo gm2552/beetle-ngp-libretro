@@ -733,14 +733,21 @@ void retro_unload_game(void)
 
 static void update_input(void)
 {
+   // RetroPad -> ALU button mapping
+   // JOYPAD_Y -> A
+   // JOYPAD_B -> B
+   // JOYPAD_A -> C
+   // JOYPAD_L -> X
+   // JOYPAD_X -> Y
+   // JOYPAD_R -> Z
    static unsigned map[] = {
-      RETRO_DEVICE_ID_JOYPAD_UP, //X Cursor horizontal-layout games
-      RETRO_DEVICE_ID_JOYPAD_DOWN, //X Cursor horizontal-layout games
-      RETRO_DEVICE_ID_JOYPAD_LEFT, //X Cursor horizontal-layout games
-      RETRO_DEVICE_ID_JOYPAD_RIGHT, //X Cursor horizontal-layout games
-      RETRO_DEVICE_ID_JOYPAD_B,
-      RETRO_DEVICE_ID_JOYPAD_A,
-      RETRO_DEVICE_ID_JOYPAD_START,
+      1 << RETRO_DEVICE_ID_JOYPAD_UP, //X Cursor horizontal-layout games
+      1 << RETRO_DEVICE_ID_JOYPAD_DOWN, //X Cursor horizontal-layout games
+      1 << RETRO_DEVICE_ID_JOYPAD_LEFT, //X Cursor horizontal-layout games
+      1 << RETRO_DEVICE_ID_JOYPAD_RIGHT, //X Cursor horizontal-layout games
+      1 << RETRO_DEVICE_ID_JOYPAD_Y,
+      1 << RETRO_DEVICE_ID_JOYPAD_B,
+      (1 << RETRO_DEVICE_ID_JOYPAD_L) | (1 << RETRO_DEVICE_ID_JOYPAD_START),
    };
    unsigned i, j;
    int16_t ret = 0;
@@ -756,7 +763,7 @@ static void update_input(void)
    }
 
    for (i = 0; i < MAX_BUTTONS; i++)
-      if ((map[i] != -1u) && (ret & (1 << map[i])))
+      if ((map[i] != -1u) && (ret & map[i]))
          input_buf |= (1 << i);
 }
 
